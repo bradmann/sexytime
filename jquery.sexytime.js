@@ -35,7 +35,7 @@
 			var hour = parseInt(dateString.substr(hourPos, 2), 10);
 			var minute = parseInt(dateString.substr(minPos, 2), 10);
 			var second = parseInt(dateString.substr(secPos, 2), 10);
-			if (!year || !month || !day || !hour || !minute || !second) {
+			if (isNaN(year) || isNaN(month) || isNaN(day) || isNaN(hour) || isNaN(minute) || isNaN(second)) {
 				return null;
 			}
 			return new Date(year, month - 1, day, hour, minute, second);
