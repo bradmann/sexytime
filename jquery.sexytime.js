@@ -1,5 +1,8 @@
 ﻿(function($){
 	var methods = {
+		pad: function(str, max) {
+			return str.length < max ? methods.pad("0" + str, max) : str;
+		},
 		init: function(options){
 			if (options) {
 				$.extend(settings, options);
@@ -42,7 +45,8 @@
 		},
 		sexify: function(time) {
 			 var compareTime = time.getTime();
-			 var currentTime = (new Date()).getTime();
+			 var now = new Date();
+			 var currentTime = now.getTime() + now.getTimezoneOffset() * 60000;
 			 var timeDiff = currentTime - compareTime;
 			 var timeArray;
 			 var period;
@@ -75,7 +79,7 @@
 			.replace('%h', time.getHours())
 			.replace('%H', hour ? hour : 12 )
 			.replace('%p', Math.floor(time.getHours()/12) ? settings.grammar.am : settings.grammar.pm)
-			.replace('%M', time.getMinutes())
+			.replace('%M', methods.pad((time.getMinutes().toString()), 2))
 			.replace('%rM', Math.floor(timeDiff/one_minute))
 			.replace('%rh', Math.floor(timeDiff/one_hour))
 			.replace('%rd', Math.floor(timeDiff/one_day))
@@ -150,7 +154,7 @@
 
 	$.fn.sexytime = function(method) {
 		self = this;
-		selector = this.selector;
+		selector = this;
 		var t;
 		if (methods[method]) {
 			return this.each(function(){
